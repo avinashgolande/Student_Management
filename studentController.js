@@ -16,7 +16,7 @@ export const addStudent = async (req, res) => {
 export const getStudentByPrn = async (req, res) => {
   try {
     console.log('Bloodgroup:', req.params.prn); // Debugging log
-    const student = await Student.findOne({ Bloodgroup: req.params.Bloodgroup }); // Correct field name
+    const student = await Student.findOne({ prn: req.params.prn }); // Correct field name
     if (!student) {
       return res.status(404).json({ message: 'Student not found' });
     }
@@ -29,7 +29,8 @@ export const getStudentByPrn = async (req, res) => {
 export const getStudentByFName = async (req, res) => {
   try {
     console.log('First_Name:', req.params.prn); // Debugging log
-    const student = await Student.findOne({ First_Name: req.params.First_Name }); // Correct field name
+    //const student = await Student.findOne({ First_Name: req.params.First_Name }); // Correct field name
+    const student = await Student.findOne({ First_Name: req.params.First_Name }); // For First Name
     if (!student) {
       return res.status(404).json({ message: 'Student not found' });
     }

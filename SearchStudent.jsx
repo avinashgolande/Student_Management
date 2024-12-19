@@ -4,11 +4,10 @@ import Navbar from './Navbar/Navbar';
 //import Dropdown from './components/Dropdown';
 
 const StudentSearch = () => {
-  const [selectedField, setSelectedField] = useState(''); // Dropdown selection
-  //const [inputValue, setInputValue] = useState(''); // Textbox input
-  //const [student, setStudent] = useState(null);
+  const [selectedField, setSelectedField] = useState('');
   const [prn, setPrn] = useState('');
   const [student, setStudent] = useState(null);
+  const [error, setError] = useState('');
 
   const handleSearch = async () => {
     if (!selectedField || !prn) {
@@ -16,9 +15,8 @@ const StudentSearch = () => {
       return;
     }
     try {
-      const encodedValue = encodeURIComponent(inputValue);
-      console.log(`http://localhost:5000/students/getStudentBy${prn}`)
-      const endpoint=`http://localhost:5000/students/${selectedField}/${encodedValue}`;
+      const encodedValue = encodeURIComponent(prn);
+      const endpoint = `http://localhost:5000/students/${selectedField}/${encodedValue}`;
       console.log('Requesting:', endpoint);
       
       const { data } = await axios.get(endpoint);
@@ -27,6 +25,7 @@ const StudentSearch = () => {
     } catch (error) {
       console.error('Error fetching student data:', error);
       setStudent(null);
+      setError('No details found for the given value.');
     }
   };
 
@@ -71,7 +70,7 @@ const StudentSearch = () => {
           <button
             onClick={handleSearch}
             className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition"
-            disabled={!selectedField || !inputValue}
+            disabled={!selectedField || !prn}
           >
             Search
           </button>
@@ -81,18 +80,23 @@ const StudentSearch = () => {
           <div className="mt-8 p-4 bg-green-100 rounded">
             <h3 className="text-xl font-bold mb-4 text-green-700">Student Details</h3>
             <ul className="space-y-2 text-gray-700">
-              <li><strong>First_Name:</strong> {student.First_Name}</li>
-              <li><strong>Middle_Name:</strong> {student.Middle_Name}</li>
-              <li><strong>Last_Name:</strong> {student.Last_Name}</li>
-              <li><strong>Gender:</strong> {student.Gender}</li>
-              <li><strong>Date_of_Birth:</strong> {student.Date_of_Birth}</li>
-              <li><strong>Age:</strong> {student.Age}</li>
-              <li><strong>Mobile_Number:</strong> {student.Mobile_Number}</li>
-              <li><strong>EmailID:</strong> {student.EmailId}</li>
-              <li><strong>Reigion:</strong> {student.Religion}</li>
-              <li><strong>Caste:</strong> {student.Caste}</li>
-              <li><strong>Address:</strong> {student.Address}</li>
-              <li><strong>Bloodgroup:</strong> {student.Bloodgroup}</li>
+            {Object.entries(student).map(([key, value]) => (
+                <li key={key}>
+                  <strong>{key.replace('_', ' ')}:</strong> {value}
+                </li>
+              ))}
+              //<li><strong>First_Name:</strong> {student.First_Name}</li>
+              //<li><strong>Middle_Name:</strong> {student.Middle_Name}</li>
+              //<li><strong>Last_Name:</strong> {student.Last_Name}</li>
+              //<li><strong>Gender:</strong> {student.Gender}</li>
+             //<li><strong>Date_of_Birth:</strong> {student.Date_of_Birth}</li>
+              //<li><strong>Age:</strong> {student.Age}</li>
+              //<li><strong>Mobile_Number:</strong> {student.Mobile_Number}</li>
+              //<li><strong>EmailID:</strong> {student.EmailId}</li>
+              //<li><strong>Reigion:</strong> {student.Religion}</li>
+              //<li><strong>Caste:</strong> {student.Caste}</li>
+              //<li><strong>Address:</strong> {student.Address}</li>
+              //<li><strong>Bloodgroup:</strong> {student.Bloodgroup}</li>
             </ul>
           </div>
         ) : error ? (
